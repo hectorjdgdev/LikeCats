@@ -1,7 +1,7 @@
 package com.dsoles.mobile.getyourcats.modules.home.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.view.WindowInsets.Side
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -13,7 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import com.dsoles.mobile.getyourcats.common.ui.components.BreedCardComponent
 import com.dsoles.mobile.getyourcats.modules.home.viewmodel.HomeViewModel
-import com.dsoles.mobile.getyourcats.modules.home.viewmodel.SharedSearchViewModel
+import com.dsoles.mobile.getyourcats.common.viewmodel.SharedViewModel
+import com.dsoles.mobile.getyourcats.modules.favorite.viewmodel.FavoriteEvent
 
 
 object HomeScreen {
@@ -23,21 +24,47 @@ object HomeScreen {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun HomeScreen(
-    sharedSearchViewModel: SharedSearchViewModel,
+    sharedViewModel: SharedViewModel,
     homeViewModel: HomeViewModel,
+    listFavoritesId: Set<String>,
+    eventFavorite: (FavoriteEvent) -> Unit,
 ) {
     val listBreedState by homeViewModel.listBreed.collectAsState()
-    val searchState by sharedSearchViewModel.searchText.collectAsState()
+    val searchState by sharedViewModel.searchText.collectAsState()
     val gridState = rememberLazyGridState()
 
-    SideEffect {
-        homeViewModel.fetchData(searchState)
-    }
 
     LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState) {
         items(listBreedState.size) { item ->
-            BreedCardComponent(listBreedState[item], false)
+
+            val breedId = listBreedState[item].id
+            val breedName = listBreedState[item].name
+            val breedImageUrl = listBreedState[item].image?.url ?: ""
+            val isFavorite = breedId in listFavoritesId
+            val onClickAddFavorite =
+                {
+                    eventFavorite(
+                        FavoriteEvent.FavoriteAddClicked(
+                            breedId, breedName, breedImageUrl
+                        )
+                    )
+                }
+            val onClickARemoveFavorite = {
+                eventFavorite(FavoriteEvent.FavoriteRemoveClicked(breedId))
+            }
+            BreedCardComponent(
+                breedId,
+                breedName,
+                breedImageUrl,
+                isFavorite,
+                onClickAddFavorite = onClickAddFavorite,
+                onClickARemoveFavorite = onClickARemoveFavorite
+            )
         }
+    }
+
+    LaunchedEffect(key1 = searchState) {
+        homeViewModel.fetchData(searchState)
     }
 
     LaunchedEffect(gridState) {
