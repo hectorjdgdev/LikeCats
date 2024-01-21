@@ -14,7 +14,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val breedUseCase: BreedUseCase) :
     ViewModel() {
     private val _listBreed = MutableStateFlow<List<Breed>>(
-        mutableListOf()
+        listOf()
     )
     val listBreed = _listBreed.asStateFlow()
 
@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(private val breedUseCase: BreedUseCase) 
     }
 
     init {
-        fetchData()
+//        fetchData()
     }
 
     fun fetchData(search: String = "") {

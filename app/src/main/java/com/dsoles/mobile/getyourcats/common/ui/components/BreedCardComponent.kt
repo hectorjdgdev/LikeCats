@@ -19,10 +19,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.dsoles.mobile.getyourcats.modules.home.data.Breed
+import com.dsoles.mobile.getyourcats.modules.favorite.viewmodel.FavoriteEvent
 
 
 @Composable
-fun BreedCardComponent(breed: Breed, isFavorite: Boolean) {
+fun BreedCardComponent(
+    breedId: String,
+    breedName: String,
+    breedImageUrl: String = "",
+    isFavorite: Boolean,
+    onClickAddFavorite: () -> Unit,
+    onClickARemoveFavorite: () -> Unit,
+
+    ) {
     Card(
         modifier = Modifier
             .height(200.dp)
@@ -33,7 +42,7 @@ fun BreedCardComponent(breed: Breed, isFavorite: Boolean) {
             Box(modifier = Modifier.fillMaxHeight(fraction = 0.7f)) {
                 val showShimmer = remember { mutableStateOf(true) }
                 AsyncImage(
-                    model = breed.image?.url,
+                    model = breedImageUrl,
                     contentDescription = "Breed Image",
                     modifier = Modifier
                         .background(
@@ -47,16 +56,20 @@ fun BreedCardComponent(breed: Breed, isFavorite: Boolean) {
                     contentScale = ContentScale.Crop
                 )
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
-                    FavoriteStartComponent(onClickAddFavorite = {
-
-                    }, onClickARemoveFavorite = {
-
-                    }, isFavorite)
+                    FavoriteStartComponent(
+                        onClickAddFavorite = {
+                            onClickAddFavorite()
+                        },
+                        onClickARemoveFavorite = {
+                            onClickARemoveFavorite()
+                        },
+                        isFavorite = isFavorite
+                    )
                 }
 
             }
             Column(modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)) {
-                Text(text = breed.name ?: "Breed Name", style = MaterialTheme.typography.h6)
+                Text(text = breedName ?: "Breed Name", style = MaterialTheme.typography.h6)
             }
         }
     }
