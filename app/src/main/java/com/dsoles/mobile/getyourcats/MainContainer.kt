@@ -3,6 +3,7 @@ package com.dsoles.mobile.getyourcats
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -34,7 +35,6 @@ fun MainContainer(
     }
 
 
-
     NavHost(navController, startDestination = MainScreen.route) {
         composable(MainScreen.route) {
             MainScreen(
@@ -52,8 +52,12 @@ fun MainContainer(
                 defaultValue = HomeScreen.route
             })
         ) {
-            val breedId = it.arguments?.getString("breedId") ?: ""
-            val screenParent = it.arguments?.getString("screenParent") ?: ""
+            val breedId = remember {
+                it.arguments?.getString("breedId") ?: ""
+            }
+            val screenParent = remember {
+                it.arguments?.getString("screenParent") ?: ""
+            }
             DetailScreen(
                 onClickBack = {
                     navController.navigateUp()

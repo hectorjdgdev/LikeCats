@@ -19,21 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.dsoles.mobile.getyourcats.common.data.FavoriteEntity
+import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 import com.dsoles.mobile.getyourcats.common.repository.SharedDataRepository
-import com.dsoles.mobile.getyourcats.modules.home.data.Breed
-import com.dsoles.mobile.getyourcats.modules.favorite.viewmodel.FavoriteEvent
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BreedCardComponent(
-    breedId: String,
-    breedName: String,
-    breedImageUrl: String = "",
-    origin: String,
-    temperament: String,
-    description: String,
+    breed: BreedEntry,
     isFavorite: Boolean,
     onClickAddFavorite: () -> Unit,
     onClickARemoveFavorite: () -> Unit,
@@ -47,15 +40,15 @@ fun BreedCardComponent(
         elevation = 4.dp,
         onClick = {
             SharedDataRepository.breedSelected =
-                FavoriteEntity(breedId, breedName, breedImageUrl, origin, temperament, description)
-            onClickInCard(breedId, screenParent)
+                breed
+            onClickInCard(breed.id, screenParent)
         }
     ) {
         Column {
             Box(modifier = Modifier.fillMaxHeight(fraction = 0.7f)) {
                 val showShimmer = remember { mutableStateOf(true) }
                 AsyncImage(
-                    model = breedImageUrl,
+                    model = breed.breedImageUrl,
                     contentDescription = "Breed Image",
                     modifier = Modifier
                         .background(
@@ -66,7 +59,8 @@ fun BreedCardComponent(
                         )
                         .fillMaxSize(),
                     onSuccess = { showShimmer.value = false },
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+
                 )
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
                     FavoriteStartComponent(
@@ -82,7 +76,7 @@ fun BreedCardComponent(
 
             }
             Column(modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)) {
-                Text(text = breedName ?: "Breed Name", style = MaterialTheme.typography.h6)
+                Text(text = breed.name ?: "Breed Name", style = MaterialTheme.typography.h6)
             }
         }
     }

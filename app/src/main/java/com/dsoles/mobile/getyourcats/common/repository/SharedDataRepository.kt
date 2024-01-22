@@ -1,7 +1,7 @@
 package com.dsoles.mobile.getyourcats.common.repository
 
-import com.dsoles.mobile.getyourcats.common.data.FavoriteEntity
+import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 
 object SharedDataRepository {
-    var breedSelected: FavoriteEntity? = null
+    var breedSelected: BreedEntry? = null
 }

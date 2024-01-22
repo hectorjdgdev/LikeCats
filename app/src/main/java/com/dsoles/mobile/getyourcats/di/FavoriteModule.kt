@@ -15,6 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ViewModelComponent::class)
 object FavoriteModule {
+    @Singleton
     @Provides
     fun provideFavoriteRespositoryImp(favoriteDao: MyFavoriteDao): FavoriteRespositoryImp {
         return FavoriteRespositoryImp(favoriteDao)

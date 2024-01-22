@@ -1,37 +1,30 @@
 package com.dsoles.mobile.getyourcats.modules.favorite.domain
 
 
-import com.dsoles.mobile.getyourcats.common.data.FavoriteEntity
+import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 import com.dsoles.mobile.getyourcats.modules.favorite.network.FavoriteRepository
+import com.dsoles.mobile.getyourcats.utils.RequestState
 import javax.inject.Inject
 
 class FavoriteUseCase @Inject constructor(private val favoriteRepository: FavoriteRepository) {
 
-    suspend fun getAllFavoritesIds(): List<String> {
+    suspend fun getAllFavoritesIds(): RequestState<List<String>> {
         return favoriteRepository.getAllFavoritesIds()
     }
 
-    suspend fun getAllFavorites(): List<FavoriteEntity> {
+    suspend fun getAllFavorites(): RequestState<List<BreedEntry>> {
         return favoriteRepository.getAllFavorites()
     }
 
     suspend fun addFavorite(
-        id: String, name: String, breedImageUrl: String,
-        origin: String,
-        temperament: String,
-        description: String
-    ) {
+        breedEntry: BreedEntry
+    ): RequestState<Boolean> {
         return favoriteRepository.addFavorite(
-            id,
-            name,
-            breedImageUrl,
-            origin,
-            temperament,
-            description
+            breedEntry
         )
     }
 
-    suspend fun removeFavorite(id: String) {
+    suspend fun removeFavorite(id: String): RequestState<Boolean> {
         return favoriteRepository.removeFavorite(id)
     }
 }

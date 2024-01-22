@@ -63,27 +63,18 @@ fun DetailScreen(
 
     val onClickAddFavorite =
         {
-            favoriteObj.let {
-                if (it != null) {
-                    eventFavorite(
-                        FavoriteEvent.FavoriteAddClicked(
-                            it.id,
-                            it.name,
-                            it.breedImageUrl,
-                            it.origin,
-                            it.temperament,
-                            it.description
-                        )
+            favoriteObj?.let {
+                eventFavorite(
+                    FavoriteEvent.FavoriteAddClicked(
+                        it
                     )
-                }
+                )
             }
-
         }
     val onClickARemoveFavorite = {
-        favoriteObj.let {
-            if (it != null) {
-                eventFavorite(FavoriteEvent.FavoriteRemoveClicked(it.id))
-            }
+        favoriteObj?.let {
+            eventFavorite(FavoriteEvent.FavoriteRemoveClicked(it))
+
         }
 
     }
@@ -92,17 +83,15 @@ fun DetailScreen(
         containerColor = MaterialTheme.colorScheme.background,
     ) {
         Box(modifier = Modifier.padding(it)) {
-            favoriteObj.let { favorite ->
-                if (favorite != null) {
-                    ParallaxComponent(
-                        id,
-                        favorite.name,
-                        favorite.breedImageUrl,
-                        favorite.origin,
-                        favorite.temperament,
-                        favorite.description,
-                    )
-                }
+            favoriteObj?.let { favorite ->
+                ParallaxComponent(
+                    id,
+                    favorite.name ?: "Name",
+                    favorite.breedImageUrl ?: "ImageUrl",
+                    favorite.origin ?: "Origin",
+                    favorite.temperament ?: "Temperament",
+                    favorite.description ?: "Description",
+                )
             }
 
             Row(
