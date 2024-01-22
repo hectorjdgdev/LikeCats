@@ -8,7 +8,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface BreedService {
-    @GET("v1/breeds?limit=10")
+    @GET("v1/breeds")
     suspend fun getBreeds(
         @Query("limit") limit: Int = ConfigApi.PAGE_SIZE,
         @Query("page") page: Int = 0,
