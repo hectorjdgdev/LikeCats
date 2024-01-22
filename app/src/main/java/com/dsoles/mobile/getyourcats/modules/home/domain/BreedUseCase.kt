@@ -30,6 +30,7 @@ class BreedUseCase @Inject constructor(private val breedRepository: BreedReposit
                 it.origin,
                 it.temperament,
                 it.description,
+                it.lifeSpan
             )
         }
         return RequestState.Success(list)

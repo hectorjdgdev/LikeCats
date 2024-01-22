@@ -42,9 +42,10 @@ fun FavoriteScreen(
             val origin = listOfFavorite[item].origin
             val temperament = listOfFavorite[item].temperament
             val description = listOfFavorite[item].description
+            val lifeSpan = listOfFavorite[item].lifeSpan
             val isFavorite = true
 
-            val breed = BreedEntry(breedId, breedName, breedImageUrl, origin, temperament, description)
+            val breed = BreedEntry(breedId, breedName, breedImageUrl, origin, temperament, description,lifeSpan )
 
             val onClickAddFavorite =
                 {

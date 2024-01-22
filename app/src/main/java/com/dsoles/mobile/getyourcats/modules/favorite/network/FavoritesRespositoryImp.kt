@@ -27,14 +27,7 @@ class FavoriteRespositoryImp @Inject constructor(private val favoriteDao: MyFavo
     ): RequestState<Boolean> {
         return try {
             favoriteDao.insertFavorite(
-                BreedEntry(
-                    breedEntry.id,
-                    breedEntry.name,
-                    breedEntry.breedImageUrl,
-                    breedEntry.origin,
-                    breedEntry.temperament,
-                    breedEntry.description
-                )
+                breedEntry
             )
             RequestState.Success(true)
         } catch (e: Exception) {

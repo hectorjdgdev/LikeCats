@@ -18,6 +18,9 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
     private val _listOfFavorite = MutableStateFlow<List<BreedEntry>>(listOf())
     val listOfFavorite = _listOfFavorite.asStateFlow()
 
+    private val _averageLifeSpan = MutableStateFlow<Float>(0.0f)
+    val averageLifeSpan = _averageLifeSpan.asStateFlow()
+
     private val _listFavDB = MutableStateFlow<MutableSet<String>>(
         mutableSetOf()
     )
@@ -50,6 +53,8 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
         _listFavDB.value = listFav
     }
 
+
+
     fun getFavorites() {
         viewModelScope.launch {
             try {
@@ -60,6 +65,9 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
                         favorites.data?.let {
                             _listOfFavorite.value = it
                             updateFavList(it)
+                        }
+                        favorites.data?.map {
+
                         }
                     }
 
