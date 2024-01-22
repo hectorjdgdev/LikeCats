@@ -79,10 +79,11 @@ fun HomeScreen(
             val origin = listBreedState[item].origin ?: ""
             val temperament = listBreedState[item].temperament ?: ""
             val description = listBreedState[item].description ?: ""
+            val lifeSpan = listBreedState[item].lifeSpan ?: ""
             val isFavorite = breedId in listFavoritesId
 
             val breed =
-                BreedEntry(breedId, breedName, breedImageUrl, origin, temperament, description)
+                BreedEntry(breedId, breedName, breedImageUrl, origin, temperament, description, lifeSpan)
 
             val onClickAddFavorite =
                 {

@@ -51,6 +51,17 @@ class FavoriteViewModelTest {
     }
 
     @Test
+    fun `averageLifeSpanQuery correctly calculates average lifespan`() = runTest {
+        // Arrange
+        val favorites = listOf(BreedEntry("1", "Breed 1", lifeSpan = "10 - 12"), BreedEntry("2", "Breed 2", lifeSpan = "8 - 10"))
+        whenever(viewModel.listOfFavorite.value).thenReturn(favorites)
+
+        viewModel.averageLifeSpanQuery()
+
+        assertEquals(9, viewModel.averageLifeSpan.value)  // Assuming average lifespan calculation logic is correct
+    }
+
+    @Test
     fun `getFavorites error updates loadErrorState`() = runTest {
         val errorMessage = "Error fetching favorites"
         whenever(favoriteUseCase.getAllFavorites()).thenReturn(RequestState.Error(errorMessage))
@@ -59,6 +70,22 @@ class FavoriteViewModelTest {
 
 
         assertEquals(errorMessage, viewModel.loadErrorState.value)
+    }
+
+    @Test
+    fun `averageLifeSpanQuery calculates correct average lifespan`() = runTest {
+        val favorites = listOf(
+            BreedEntry("1", "Breed 1", lifeSpan = "10-12"),
+            BreedEntry("2", "Breed 2", lifeSpan = "8 - 10"),
+            BreedEntry("3", "Breed 3", lifeSpan = "12 - 15")
+        )
+        whenever(favoriteUseCase.getAllFavorites()).thenReturn(RequestState.Success(favorites))
+
+        viewModel.getFavorites()
+        viewModel.averageLifeSpanQuery()
+
+        val expectedAverageLifeSpan = (10 + 8 + 12) / 3 // Assuming this is how average is calculated
+        assertEquals(expectedAverageLifeSpan, viewModel.averageLifeSpan.value)
     }
 
 }

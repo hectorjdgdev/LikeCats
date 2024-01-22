@@ -18,6 +18,9 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
     private val _listOfFavorite = MutableStateFlow<List<BreedEntry>>(listOf())
     val listOfFavorite = _listOfFavorite.asStateFlow()
 
+    private val _averageLifeSpan = MutableStateFlow(0)
+    val averageLifeSpan = _averageLifeSpan.asStateFlow()
+
     private val _listFavDB = MutableStateFlow<MutableSet<String>>(
         mutableSetOf()
     )
@@ -50,6 +53,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
         _listFavDB.value = listFav
     }
 
+
     fun getFavorites() {
         viewModelScope.launch {
             try {
@@ -74,6 +78,29 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
             }
             isLoadingState.value = false
         }
+    }
+
+    fun averageLifeSpanQuery(){
+        val listOfFavoriteSpan = listOfFavorite.value.map {
+            it.lifeSpan ?: ""
+        }
+        _averageLifeSpan.value =
+            averageLifespanLowerValue(listOfFavoriteSpan)
+    }
+   private fun averageLifespanLowerValue(lifespanList: List<String>): Int {
+        var sum = 0
+        var count = 0
+
+        lifespanList.forEach { lifespan ->
+            val numbers = try {
+                lifespan.split("-")[0].replace(" ", "").toInt()
+            } catch (e: Exception) {
+                0
+            }
+            sum += numbers
+            count++
+        }
+        return if (count > 0) (sum / count) else 0
     }
 
     private fun addFavorite(

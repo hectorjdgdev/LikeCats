@@ -10,5 +10,6 @@ data class BreedEntry(
     var breedImageUrl: String? = null,
     var origin: String? = null,
     var temperament: String? = null,
-    var description: String? = null
+    var description: String? = null,
+    var lifeSpan: String? = null
 )
