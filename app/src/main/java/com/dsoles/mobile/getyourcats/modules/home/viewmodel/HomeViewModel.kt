@@ -57,21 +57,12 @@ class HomeViewModel @Inject constructor(private val breedUseCase: BreedUseCase) 
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                val breedListResult = breedUseCase.getBreeds(search, currentPage.value)
+                val breedListResult = breedUseCase.getBreeds(search, page = currentPage.value)
                 when (breedListResult) {
                     is RequestState.Success -> {
                         breedListResult.data?.let {
-                            val listBreedEntry = it.map { breed ->
-                                BreedEntry(
-                                    breed.id,
-                                    breed.name,
-                                    breed.image?.url ?: "",
-                                    breed.origin,
-                                    breed.temperament,
-                                    breed.description,
-                                )
-                            }
-                            _listBreed.value = _listBreed.value + listBreedEntry
+                            _listBreed.value = _listBreed.value + it
+
                             currentPage.value++
                             isLastPage.value = it.size < pageSize
                         }

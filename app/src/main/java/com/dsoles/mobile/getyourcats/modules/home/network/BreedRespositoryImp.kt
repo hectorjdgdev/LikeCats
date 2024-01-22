@@ -9,7 +9,7 @@ class BreedRespositoryImp @Inject constructor(private val breedService: BreedSer
     BreedRepository {
     override suspend fun getBreeds(page: Int,pageSize: Int): RequestState<List<Breed>> {
         return try {
-            RequestState.Success(breedService.getBreeds(page))
+            RequestState.Success(breedService.getBreeds(page = page, limit = pageSize))
         } catch (e: Exception) {
             RequestState.Error(e.message.toString())
         }
