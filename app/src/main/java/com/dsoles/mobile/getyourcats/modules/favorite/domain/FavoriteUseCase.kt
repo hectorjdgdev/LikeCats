@@ -10,12 +10,25 @@ class FavoriteUseCase @Inject constructor(private val favoriteRepository: Favori
     suspend fun getAllFavoritesIds(): List<String> {
         return favoriteRepository.getAllFavoritesIds()
     }
+
     suspend fun getAllFavorites(): List<FavoriteEntity> {
         return favoriteRepository.getAllFavorites()
     }
 
-    suspend fun addFavorite(id: String, name: String, imageUrl: String) {
-        return favoriteRepository.addFavorite(id, name, imageUrl)
+    suspend fun addFavorite(
+        id: String, name: String, breedImageUrl: String,
+        origin: String,
+        temperament: String,
+        description: String
+    ) {
+        return favoriteRepository.addFavorite(
+            id,
+            name,
+            breedImageUrl,
+            origin,
+            temperament,
+            description
+        )
     }
 
     suspend fun removeFavorite(id: String) {

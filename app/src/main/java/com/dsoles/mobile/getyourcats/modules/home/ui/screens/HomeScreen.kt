@@ -28,6 +28,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     listFavoritesId: Set<String>,
     eventFavorite: (FavoriteEvent) -> Unit,
+    onClickInCard: (breedId: String, screenParent: String) -> Unit = {_,_->}
 ) {
     val listBreedState by homeViewModel.listBreed.collectAsState()
     val searchState by sharedViewModel.searchText.collectAsState()
@@ -40,12 +41,15 @@ fun HomeScreen(
             val breedId = listBreedState[item].id
             val breedName = listBreedState[item].name
             val breedImageUrl = listBreedState[item].image?.url ?: ""
+            val origin = listBreedState[item].origin ?: ""
+            val temperament = listBreedState[item].temperament ?: ""
+            val description = listBreedState[item].description ?: ""
             val isFavorite = breedId in listFavoritesId
             val onClickAddFavorite =
                 {
                     eventFavorite(
                         FavoriteEvent.FavoriteAddClicked(
-                            breedId, breedName, breedImageUrl
+                            breedId, breedName, breedImageUrl, origin, temperament, description
                         )
                     )
                 }
@@ -56,9 +60,14 @@ fun HomeScreen(
                 breedId,
                 breedName,
                 breedImageUrl,
+                origin,
+                temperament,
+                description,
                 isFavorite,
                 onClickAddFavorite = onClickAddFavorite,
-                onClickARemoveFavorite = onClickARemoveFavorite
+                onClickARemoveFavorite = onClickARemoveFavorite,
+                onClickInCard,
+                HomeScreen.route
             )
         }
     }

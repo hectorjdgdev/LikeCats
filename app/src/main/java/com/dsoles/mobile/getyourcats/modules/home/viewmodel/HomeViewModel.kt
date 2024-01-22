@@ -34,10 +34,6 @@ class HomeViewModel @Inject constructor(private val breedUseCase: BreedUseCase) 
         }
     }
 
-    init {
-//        fetchData()
-    }
-
     fun fetchData(search: String = "") {
         searchTextUpdate(search)
         if (isLastPage || isLoading) return

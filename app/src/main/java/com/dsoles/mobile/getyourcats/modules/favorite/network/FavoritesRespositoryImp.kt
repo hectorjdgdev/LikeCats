@@ -16,9 +16,12 @@ class FavoriteRespositoryImp @Inject constructor(private val favoriteDao: MyFavo
     override suspend fun addFavorite(
         id: String,
         name: String,
-        imageUrl: String
+        breedImageUrl: String,
+        origin: String,
+        temperament: String,
+        description: String
     ) {
-        favoriteDao.insertFavorite(FavoriteEntity(id, name, imageUrl))
+        favoriteDao.insertFavorite(FavoriteEntity(id, name, breedImageUrl,origin, temperament, description))
     }
 
     override suspend fun removeFavorite(id: String) {
@@ -26,7 +29,10 @@ class FavoriteRespositoryImp @Inject constructor(private val favoriteDao: MyFavo
             FavoriteEntity(
                 id,
                 name = "",
-                breedImageUrl = ""
+                breedImageUrl = "",
+                origin= "",
+                temperament= "",
+                description= ""
             )
         )
     }
@@ -41,7 +47,10 @@ interface FavoriteRepository {
     suspend fun addFavorite(
         id: String,
         name: String,
-        imageUrl: String
+        breedImageUrl: String,
+        origin: String,
+        temperament: String,
+        description: String
     )
 
     suspend fun removeFavorite(id: String)

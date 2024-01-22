@@ -11,14 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.dsoles.mobile.getyourcats.ui.navigation.BottomNavItem
 
 
 @Composable
-fun BottomBar(navController: NavController, items: List<BottomNavItem>) {
-    val selectedItem by remember { mutableStateOf(items.first().screen_route) }
+fun BottomBar(navController: NavController) {
+    val items = listOf(BottomNavItem.Home, BottomNavItem.Favorite)
+    var selectedItem by remember { mutableStateOf(items.first().screen_route) }
     Box {
         BottomNavigation(
             backgroundColor = MaterialTheme.colorScheme.primary,
@@ -31,11 +34,10 @@ fun BottomBar(navController: NavController, items: List<BottomNavItem>) {
                     label = { Text(item.title) },
                     selected = item.screen_route == selectedItem,
                     onClick = {
+                        selectedItem = item.screen_route
                         navController.navigate(item.screen_route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
                             }
                             launchSingleTop = true
                             restoreState = true

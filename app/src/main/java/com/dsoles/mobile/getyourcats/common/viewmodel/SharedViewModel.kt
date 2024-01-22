@@ -3,6 +3,7 @@ package com.dsoles.mobile.getyourcats.common.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dsoles.mobile.getyourcats.modules.favorite.domain.FavoriteUseCase
+import com.dsoles.mobile.getyourcats.modules.home.data.Breed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +18,7 @@ class SharedViewModel @Inject constructor(private val favoriteUseCase: FavoriteU
 
     private val _listFavorites = MutableStateFlow<Set<String>>(setOf())
     val listFavorites = _listFavorites.asStateFlow()
+
 
     init {
         getListFavoritesIds()
