@@ -10,6 +10,7 @@ import retrofit2.http.Query
 interface BreedService {
     @GET("v1/breeds?limit=10")
     suspend fun getBreeds(
+        @Query("limit") limit: Int = ConfigApi.PAGE_SIZE,
         @Query("page") page: Int = 0,
         @Header("x-api-key") apiKey: String = ConfigApi.API_KEY
     ): List<Breed>

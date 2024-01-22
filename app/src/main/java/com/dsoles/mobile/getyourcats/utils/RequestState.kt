@@ -1,14 +1,6 @@
 package com.dsoles.mobile.getyourcats.utils
 
-//sealed class RequestState<T>{
-//    var error: String? = null
-//    data class Success<T>(val data: T) : RequestState<T>()
-//    data class Error<T>(val errorValue: String) : RequestState<T>()
-//    data class Loading<T>(val data: T?= null) : RequestState<T>()
-//}
-
-sealed class RequestState{
-    object Loading : RequestState()
-    object Success : RequestState()
-    data class Error(val exception: String) : RequestState()
+sealed class RequestState<T>(val data:T? = null, val message: String? = null){
+    class Success<T>(data: T): RequestState<T>(data)
+    class Error<T>(message: String): RequestState<T>(null, message)
 }

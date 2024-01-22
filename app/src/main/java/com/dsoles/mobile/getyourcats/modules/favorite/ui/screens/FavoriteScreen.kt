@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 
 import com.dsoles.mobile.getyourcats.common.ui.components.BreedCardComponent
 import com.dsoles.mobile.getyourcats.common.viewmodel.SharedViewModel
@@ -43,25 +44,22 @@ fun FavoriteScreen(
             val description = listOfFavorite[item].description
             val isFavorite = true
 
+            val breed = BreedEntry(breedId, breedName, breedImageUrl, origin, temperament, description)
+
             val onClickAddFavorite =
                 {
                     eventFavorite(
                         FavoriteEvent.FavoriteAddClicked(
-                            breedId, breedName, breedImageUrl, origin, temperament, description
+                            breed
                         )
                     )
                 }
             val onClickARemoveFavorite = {
-                eventFavorite(FavoriteEvent.FavoriteRemoveClicked(breedId))
+                eventFavorite(FavoriteEvent.FavoriteRemoveClicked(breed))
             }
 
             BreedCardComponent(
-                listOfFavorite[item].id,
-                listOfFavorite[item].name,
-                listOfFavorite[item].breedImageUrl ?: "",
-                origin,
-                temperament,
-                description,
+                breed,
                 isFavorite = isFavorite,
                 onClickAddFavorite,
                 onClickARemoveFavorite,

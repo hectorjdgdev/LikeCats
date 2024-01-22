@@ -16,6 +16,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ViewModelComponent::class)
 object HomeModule {
+    @Singleton
     @Provides
     fun provideBreedRepository(breedService: BreedService): BreedRepository {
         return BreedRespositoryImp(breedService)

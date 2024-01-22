@@ -1,9 +1,12 @@
 package com.dsoles.mobile.getyourcats.modules.home.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dsoles.mobile.getyourcats.modules.home.data.Breed
+import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 import com.dsoles.mobile.getyourcats.modules.home.domain.BreedUseCase
+import com.dsoles.mobile.getyourcats.utils.ConfigApi
+import com.dsoles.mobile.getyourcats.utils.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,42 +16,80 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val breedUseCase: BreedUseCase) :
     ViewModel() {
-    private val _listBreed = MutableStateFlow<List<Breed>>(
+    private val _listBreed = MutableStateFlow<List<BreedEntry>>(
         listOf()
     )
     val listBreed = _listBreed.asStateFlow()
 
-    private var currentPage = 0
-    private val pageSize = 10
-    private var isLastPage = false
-    private var isLoading = false
+    private var currentPage = mutableStateOf(0)
+    private val pageSize = ConfigApi.PAGE_SIZE
+    private var isLastPage = mutableStateOf(false)
+    private var isLoading = mutableStateOf(false)
 
     private var searchableText = ""
+
+    var loadErrorState = mutableStateOf("")
+    var isLoadingState = mutableStateOf(false)
+
+
+    init {
+        isLoadingState.value = true
+    }
+
+    fun activeIsLoadingGeneral() {
+        isLoadingState.value = true
+        loadErrorState.value = ""
+    }
 
     private fun searchTextUpdate(search: String) {
         if (searchableText != search) {
             searchableText = search
-            currentPage = 0
-            isLastPage = false
+            currentPage.value = 0
+            isLastPage.value = false
             _listBreed.value = mutableListOf()
         }
     }
 
     fun fetchData(search: String = "") {
         searchTextUpdate(search)
-        if (isLastPage || isLoading) return
-        isLoading = true
+        if (isLastPage.value || isLoading.value) return
 
         viewModelScope.launch {
             try {
-                val breedListResult = breedUseCase.getBreeds(search, currentPage)
-                _listBreed.value = _listBreed.value + breedListResult
-                currentPage++
-                isLastPage = breedListResult.size < pageSize
-            } catch (e: Exception) {
+                isLoading.value = true
+                val breedListResult = breedUseCase.getBreeds(search, currentPage.value)
+                when (breedListResult) {
+                    is RequestState.Success -> {
+                        breedListResult.data?.let {
+                            val listBreedEntry = it.map { breed ->
+                                BreedEntry(
+                                    breed.id,
+                                    breed.name,
+                                    breed.image?.url ?: "",
+                                    breed.origin,
+                                    breed.temperament,
+                                    breed.description,
+                                )
+                            }
+                            _listBreed.value = _listBreed.value + listBreedEntry
+                            currentPage.value++
+                            isLastPage.value = it.size < pageSize
+                        }
+                        loadErrorState.value = ""
+                    }
 
+                    is RequestState.Error -> {
+                        breedListResult.message?.let {
+                            loadErrorState.value = it
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                loadErrorState.value = e.message ?: "Generic Error"
             }
-            isLoading = false
+            isLoading.value = false
+            isLoadingState.value = false
+
         }
     }
 

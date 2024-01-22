@@ -11,28 +11,29 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dsoles.mobile.getyourcats.common.ui.components.BottomBar
 import com.dsoles.mobile.getyourcats.common.ui.components.SearchTopBar
 import com.dsoles.mobile.getyourcats.common.viewmodel.SharedViewModel
-import com.dsoles.mobile.getyourcats.modules.detail.ui.screens.DetailScreen
+import com.dsoles.mobile.getyourcats.modules.favorite.ui.screens.FavoriteScreen
 import com.dsoles.mobile.getyourcats.modules.favorite.viewmodel.FavoriteViewModel
+import com.dsoles.mobile.getyourcats.modules.home.ui.screens.HomeScreen
 import com.dsoles.mobile.getyourcats.modules.home.viewmodel.HomeViewModel
-import com.dsoles.mobile.getyourcats.ui.navigation.NavigatorScreenContainer
 
 
-object MainScreen{
+object MainScreen {
     val route = "MainScreen"
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     sharedViewModel: SharedViewModel,
     favoriteViewModel: FavoriteViewModel,
-    onClickInCard: (breedId: String,screenParent: String) -> Unit
+    onClickInCard: (breedId: String, screenParent: String) -> Unit
 ) {
 
     val listFavId by favoriteViewModel.listFavDB.collectAsState()
@@ -41,7 +42,7 @@ fun MainScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            SearchTopBar(sharedViewModel)
+            SearchTopBar(sharedViewModel, hint = "Search")
         },
         bottomBar = {
             BottomBar(navController)
@@ -53,17 +54,25 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            NavigatorScreenContainer(
-                navController,
-                sharedViewModel,
-                homeViewModel,
-                favoriteViewModel,
-                listFavId,
-                { event ->
-                    favoriteViewModel.onEvent(event)
-                },
-                onClickInCard
-            )
+            NavHost(navController, startDestination = HomeScreen.route) {
+                composable(HomeScreen.route) {
+                    HomeScreen(
+                        sharedViewModel,
+                        homeViewModel,
+                        listFavId,
+                        eventFavorite = { event ->
+                            favoriteViewModel.onEvent(event)
+                        },
+                        onClickInCard
+                    )
+                }
+
+                composable(FavoriteScreen.route) {
+                    FavoriteScreen(eventFavorite = { event ->
+                        favoriteViewModel.onEvent(event)
+                    }, favoriteViewModel, onClickInCard)
+                }
+            }
         }
     }
 }

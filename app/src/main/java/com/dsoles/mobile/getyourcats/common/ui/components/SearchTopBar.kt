@@ -25,36 +25,38 @@ import com.dsoles.mobile.getyourcats.common.viewmodel.SharedViewModel
 
 @Composable
 fun SearchTopBar(
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    modifier: Modifier = Modifier,
+    hint: String = "",
 ) {
     var searchText by remember { mutableStateOf("") }
-    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)) {
-        Box(
+    Box(
+        modifier = modifier
+            .background(color = MaterialTheme.colorScheme.primary)
+            .statusBarsPadding()
+            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+    ) {
+        TextField(
+            value = searchText,
+            onValueChange = {
+                searchText = it
+                sharedViewModel.setSearchText(it)
+            },
+            maxLines = 1,
+            placeholder = { Text(hint, color = Color.White) },
             modifier = Modifier
-                .statusBarsPadding()
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-        ) {
-            TextField(
-                value = searchText,
-                onValueChange = {
-                    searchText = it
-                    sharedViewModel.setSearchText(it)
-                },
-                placeholder = { Text("Search", color = Color.White) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Gray)
-                    .clip(RoundedCornerShape(30.dp)) // Rounded corners
-                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)),
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    textColor = Color.White,
-                )
+                .fillMaxWidth()
+                .background(Color.Gray)
+                .clip(RoundedCornerShape(30.dp)) // Rounded corners
+                .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)),
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                textColor = Color.White,
             )
-        }
+        )
     }
 
 }

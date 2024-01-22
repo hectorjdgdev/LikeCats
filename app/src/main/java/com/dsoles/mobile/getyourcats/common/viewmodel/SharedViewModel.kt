@@ -30,7 +30,9 @@ class SharedViewModel @Inject constructor(private val favoriteUseCase: FavoriteU
 
     fun getListFavoritesIds() {
         viewModelScope.launch {
-            _listFavorites.value = favoriteUseCase.getAllFavoritesIds().toSet()
+            favoriteUseCase.getAllFavoritesIds().data?.let {
+                _listFavorites.value = it.toSet()
+            }
         }
 
     }
