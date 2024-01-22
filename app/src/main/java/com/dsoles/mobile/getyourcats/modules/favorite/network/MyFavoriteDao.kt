@@ -12,6 +12,9 @@ interface MyFavoriteDao {
     @Query("SELECT * FROM FavoriteEntity")
     suspend fun getAllFavorites(): List<FavoriteEntity>
 
+    @Query("SELECT * FROM FavoriteEntity WHERE id = :id")
+    suspend fun getFavoriteById(id: String): FavoriteEntity
+
     @Query("SELECT id FROM FavoriteEntity")
     suspend fun getAllFavoritesIds(): List<String>
 

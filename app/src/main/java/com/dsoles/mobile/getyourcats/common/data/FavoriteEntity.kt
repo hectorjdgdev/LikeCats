@@ -7,5 +7,8 @@ import androidx.room.PrimaryKey
 data class FavoriteEntity(
     @PrimaryKey var id: String,
     var name: String,
-    var breedImageUrl: String? = null
+    var breedImageUrl: String,
+    var origin: String,
+    var temperament: String,
+    var description: String
 )

@@ -9,7 +9,10 @@ sealed class FavoriteEvent {
     data class FavoriteAddClicked(
         val id: String,
         val name: String,
-        val imageUrl: String
+        val breedImageUrl: String,
+        val origin: String,
+        val temperament: String,
+        val description: String
     ) : FavoriteEvent()
 
     data class FavoriteRemoveClicked(val id: String) : FavoriteEvent()

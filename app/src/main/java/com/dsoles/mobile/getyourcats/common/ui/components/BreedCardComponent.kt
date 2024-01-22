@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,25 +19,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.dsoles.mobile.getyourcats.common.data.FavoriteEntity
+import com.dsoles.mobile.getyourcats.common.repository.SharedDataRepository
 import com.dsoles.mobile.getyourcats.modules.home.data.Breed
 import com.dsoles.mobile.getyourcats.modules.favorite.viewmodel.FavoriteEvent
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BreedCardComponent(
     breedId: String,
     breedName: String,
     breedImageUrl: String = "",
+    origin: String,
+    temperament: String,
+    description: String,
     isFavorite: Boolean,
     onClickAddFavorite: () -> Unit,
     onClickARemoveFavorite: () -> Unit,
-
-    ) {
+    onClickInCard: (breedId: String, screenParent: String) -> Unit = { _, _ -> },
+    screenParent: String
+) {
     Card(
         modifier = Modifier
             .height(200.dp)
             .padding(horizontal = 10.dp, vertical = 10.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
+        onClick = {
+            SharedDataRepository.breedSelected =
+                FavoriteEntity(breedId, breedName, breedImageUrl, origin, temperament, description)
+            onClickInCard(breedId, screenParent)
+        }
     ) {
         Column {
             Box(modifier = Modifier.fillMaxHeight(fraction = 0.7f)) {

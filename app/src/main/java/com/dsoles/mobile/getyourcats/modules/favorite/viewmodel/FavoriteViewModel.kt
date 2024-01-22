@@ -31,7 +31,10 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
             is FavoriteEvent.FavoriteAddClicked -> addFavorite(
                 event.id,
                 event.name,
-                event.imageUrl
+                event.breedImageUrl,
+                event.origin,
+                event.temperament,
+                event.description
             )
 
             is FavoriteEvent.FavoriteRemoveClicked -> deleteFavorite(event.id)
@@ -59,9 +62,14 @@ class FavoriteViewModel @Inject constructor(private val favoriteUseCase: Favorit
         }
     }
 
-    private fun addFavorite(id: String, name: String, imageUrl: String) {
+    private fun addFavorite(
+        id: String, name: String, breedImageUrl: String,
+        origin: String,
+        temperament: String,
+        description: String
+    ) {
         viewModelScope.launch {
-            favoriteUseCase.addFavorite(id, name, imageUrl)
+            favoriteUseCase.addFavorite(id, name, breedImageUrl, origin, temperament, description)
             getFavorites()
         }
     }

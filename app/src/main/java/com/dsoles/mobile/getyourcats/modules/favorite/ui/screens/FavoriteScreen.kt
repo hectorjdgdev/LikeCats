@@ -21,7 +21,8 @@ object FavoriteScreen {
 @Composable
 fun FavoriteScreen(
     eventFavorite: (FavoriteEvent) -> Unit,
-    favoriteViewModel: FavoriteViewModel
+    favoriteViewModel: FavoriteViewModel,
+    onClickInCard: (breedId: String, screenParent: String) -> Unit = { _, _ -> }
 ) {
 
     val listOfFavorite by favoriteViewModel.listOfFavorite.collectAsState()
@@ -37,13 +38,16 @@ fun FavoriteScreen(
             val breedId = listOfFavorite[item].id
             val breedName = listOfFavorite[item].name
             val breedImageUrl = listOfFavorite[item].breedImageUrl ?: ""
+            val origin = listOfFavorite[item].origin
+            val temperament = listOfFavorite[item].temperament
+            val description = listOfFavorite[item].description
             val isFavorite = true
 
             val onClickAddFavorite =
                 {
                     eventFavorite(
                         FavoriteEvent.FavoriteAddClicked(
-                            breedId, breedName, breedImageUrl
+                            breedId, breedName, breedImageUrl, origin, temperament, description
                         )
                     )
                 }
@@ -55,9 +59,14 @@ fun FavoriteScreen(
                 listOfFavorite[item].id,
                 listOfFavorite[item].name,
                 listOfFavorite[item].breedImageUrl ?: "",
+                origin,
+                temperament,
+                description,
                 isFavorite = isFavorite,
                 onClickAddFavorite,
-                onClickARemoveFavorite
+                onClickARemoveFavorite,
+                onClickInCard,
+                FavoriteScreen.route
             )
         }
     }
