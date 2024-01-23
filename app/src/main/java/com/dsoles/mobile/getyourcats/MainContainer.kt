@@ -32,7 +32,7 @@ fun MainContainer(
     val listFavIds by favoriteViewModel.listFavDB.collectAsState()
 
     val onClickInCard = { breedId: String, screenParent: String ->
-        navController.navigate(DetailScreen.route + "?breedId=$breedId&screenParent=$screenParent") {
+        navController.navigate(DetailScreen.route + "?${DetailScreen.PARAM_BREED_ID}=$breedId&${DetailScreen.PARAM_SCREEN_PARNT}=$screenParent") {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
@@ -53,18 +53,18 @@ fun MainContainer(
             }
 
             composable(
-                DetailScreen.route + "?breedId={breedId}&screenParent={screenParent}",
-                arguments = listOf(navArgument("breedId") {
+                DetailScreen.route + "?${DetailScreen.PARAM_BREED_ID}={breedId}&${DetailScreen.PARAM_SCREEN_PARNT}={screenParent}",
+                arguments = listOf(navArgument(DetailScreen.PARAM_BREED_ID) {
                     defaultValue = ""
                 }, navArgument("screenParent") {
                     defaultValue = HomeScreen.route
                 })
             ) {
                 val breedId = remember {
-                    it.arguments?.getString("breedId") ?: ""
+                    it.arguments?.getString(DetailScreen.PARAM_BREED_ID) ?: ""
                 }
                 val screenParent = remember {
-                    it.arguments?.getString("screenParent") ?: ""
+                    it.arguments?.getString(DetailScreen.PARAM_SCREEN_PARNT) ?: ""
                 }
                 DetailScreen(
                     onClickBack = {

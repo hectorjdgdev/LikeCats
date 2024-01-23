@@ -27,25 +27,14 @@ object NetworkModule {
         return Cache(File(context.cacheDir, "http_cache"), cacheSize.toLong())
     }
 
-
-    @Provides
-    @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-    }
-
     @Provides
     @Singleton
     fun provideOkHttpClient(
         @ApplicationContext context: Context,
         cache: Cache,
-        loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .cache(cache)
-            .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
                 var request = chain.request()
                 request = if (isNetworkAvailable(context))

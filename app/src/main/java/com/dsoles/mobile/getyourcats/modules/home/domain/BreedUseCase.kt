@@ -1,10 +1,7 @@
 package com.dsoles.mobile.getyourcats.modules.home.domain
 
 
-
-import androidx.compose.foundation.pager.PageSize
 import com.dsoles.mobile.getyourcats.common.data.BreedEntry
-import com.dsoles.mobile.getyourcats.modules.home.data.Breed
 import com.dsoles.mobile.getyourcats.modules.home.network.BreedRepository
 import com.dsoles.mobile.getyourcats.utils.ConfigApi
 import com.dsoles.mobile.getyourcats.utils.RequestState

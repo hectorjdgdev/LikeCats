@@ -43,6 +43,8 @@ import com.dsoles.mobile.getyourcats.modules.home.viewmodel.HomeViewModel
 
 object DetailScreen {
     const val route = "DetailScreen"
+    const val PARAM_BREED_ID = "breedId"
+    const val PARAM_SCREEN_PARNT = "screenParent"
 }
 
 
