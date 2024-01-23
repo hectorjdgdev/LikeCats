@@ -20,11 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dsoles.mobile.getyourcats.R
 import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 
 import com.dsoles.mobile.getyourcats.common.ui.components.BreedCardComponent
@@ -74,51 +77,66 @@ fun FavoriteScreen(
                 )
             }
         }
-        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-            items(listOfFavorite.size) { item ->
-
-
-                val breedId = listOfFavorite[item].id
-                val breedName = listOfFavorite[item].name
-                val breedImageUrl = listOfFavorite[item].breedImageUrl ?: ""
-                val origin = listOfFavorite[item].origin
-                val temperament = listOfFavorite[item].temperament
-                val description = listOfFavorite[item].description
-                val lifeSpan = listOfFavorite[item].lifeSpan
-                val isFavorite = true
-
-                val breed = BreedEntry(
-                    breedId,
-                    breedName,
-                    breedImageUrl,
-                    origin,
-                    temperament,
-                    description,
-                    lifeSpan
-                )
-
-                val onClickAddFavorite =
-                    {
-                        eventFavorite(
-                            FavoriteEvent.FavoriteAddClicked(
-                                breed
-                            )
-                        )
-                    }
-                val onClickARemoveFavorite = {
-                    eventFavorite(FavoriteEvent.FavoriteRemoveClicked(breed))
-                }
-
-                BreedCardComponent(
-                    breed,
-                    isFavorite = isFavorite,
-                    onClickAddFavorite,
-                    onClickARemoveFavorite,
-                    onClickInCard,
-                    FavoriteScreen.route
+        if(listOfFavorite.isEmpty()){
+            Box(modifier = Modifier.fillMaxSize()){
+               Text(
+                    text = stringResource(id = R.string.favorite_empty),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        letterSpacing = 1.5.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             }
+        }else{
+            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                items(listOfFavorite.size) { item ->
+                    val breedId = listOfFavorite[item].id
+                    val breedName = listOfFavorite[item].name
+                    val breedImageUrl = listOfFavorite[item].breedImageUrl ?: ""
+                    val origin = listOfFavorite[item].origin
+                    val temperament = listOfFavorite[item].temperament
+                    val description = listOfFavorite[item].description
+                    val lifeSpan = listOfFavorite[item].lifeSpan
+                    val isFavorite = true
+
+                    val breed = BreedEntry(
+                        breedId,
+                        breedName,
+                        breedImageUrl,
+                        origin,
+                        temperament,
+                        description,
+                        lifeSpan
+                    )
+
+                    val onClickAddFavorite =
+                        {
+                            eventFavorite(
+                                FavoriteEvent.FavoriteAddClicked(
+                                    breed
+                                )
+                            )
+                        }
+                    val onClickARemoveFavorite = {
+                        eventFavorite(FavoriteEvent.FavoriteRemoveClicked(breed))
+                    }
+
+                    BreedCardComponent(
+                        breed,
+                        isFavorite = isFavorite,
+                        onClickAddFavorite,
+                        onClickARemoveFavorite,
+                        onClickInCard,
+                        FavoriteScreen.route
+                    )
+                }
+            }
         }
+
     }
 
 

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GetYourCats</string>
+    <string name="app_name">Like Cats</string>
+    <string name="favorite_empty">Please add some favorites clicking in the star icon</string>
 </resources>
