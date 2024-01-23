@@ -18,49 +18,44 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+private val DarkColorScheme: ColorScheme = darkColorScheme(
+    primary = DarkPrimary,
+    onPrimary = DarkOnPrimary,
+    secondary = DarkSecondary,
+    onSecondary = DarkOnSecondary,
+    background = DarkBackground,
+    onBackground = DarkOnBackground,
+    surface = DarkSurface,
+    onSurface = DarkOnSurface,
+    error = DarkError,
+    onError = DarkOnError
+    // Additional colors like tertiary, primaryContainer, etc., can be added as needed
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+private val LightColorScheme : ColorScheme = lightColorScheme(
+    primary = Primary,
+    onPrimary = OnPrimary,
+    secondary = Secondary,
+    onSecondary = OnSecondary,
+    background = Background,
+    onBackground = OnBackground,
+    surface = Surface,
+    onSurface = OnSurface,
+    error = Error,
+    onError = OnError
+    // Additional colors like tertiary, primaryContainer, etc., can be added as needed
 )
 
-
-private val _darkColorPalette: (Context) -> ColorScheme = { context ->
-    dynamicDarkColorScheme(context).copy(
-        primary = Color.Blue,
-        background = Color.Black,
-        secondary = Color.Yellow,
-    )
-}
-
-private val _lightColorPalette: (Context) -> ColorScheme = { context ->
-    dynamicLightColorScheme(context).copy(
-        primary = Color.Red,
-        background = Color.White,
-        secondary = Color.Red
-    )
-}
 
 
 @Composable
 fun GetYourCatsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) _darkColorPalette(context) else _lightColorPalette(context)
-        }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
@@ -68,8 +63,8 @@ fun GetYourCatsTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            window.navigationBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }

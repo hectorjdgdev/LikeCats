@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import com.dsoles.mobile.getyourcats.ui.theme.GetYourCatsTheme
+
 import dagger.hilt.android.AndroidEntryPoint
 
 

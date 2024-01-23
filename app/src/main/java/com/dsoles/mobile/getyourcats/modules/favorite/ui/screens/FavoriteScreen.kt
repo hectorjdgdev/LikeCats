@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
@@ -20,7 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dsoles.mobile.getyourcats.common.data.BreedEntry
 
 import com.dsoles.mobile.getyourcats.common.ui.components.BreedCardComponent
@@ -55,12 +59,18 @@ fun FavoriteScreen(
         if(averageLifeSpan > 0){
             Box(modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Blue)) {
+                .background(MaterialTheme.colorScheme.secondary)) {
                 Text(
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        letterSpacing = 1.5.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
                     modifier = Modifier
                         .padding(10.dp)
                         .align(Alignment.Center),
-                    text = AnnotatedString("Avergage $averageLifeSpan")
+                    text = AnnotatedString("Average $averageLifeSpan years")
                 )
             }
         }
