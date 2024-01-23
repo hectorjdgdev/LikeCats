@@ -47,7 +47,7 @@ separation of concerns.
 <b>Modularity:</b> Codebase is organized in a modular fashion for maintainability.
 
 # <b>Technical Decisions</b>
-we have adopted a modular structure housed in the "Modules" folder, providing a clean and organized codebase. Below is a detailed breakdown of our structure and the key decisions behind it.
+We have adopted a modular structure housed in the "Modules" folder, providing a clean and organized codebase. Below is a detailed breakdown of our structure and the key decisions behind it.
 
 Module Structure
 
@@ -70,6 +70,7 @@ Provides detailed information about each breed.
 Features: Includes breed origin, temperament, description, and the option to mark as a favorite.
 Each module is further divided into specific subdirectories for optimal organization:
 
+# Others:
 data: Houses all the POJO classes used within the module.
 domain: Contains classes related to use cases.
 network: Manages classes that define API interactions and repositories.
