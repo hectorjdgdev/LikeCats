@@ -1,6 +1,11 @@
 package com.dsoles.mobile.getyourcats.common.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -13,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.dsoles.mobile.getyourcats.ui.navigation.BottomNavItem
@@ -22,15 +28,19 @@ import com.dsoles.mobile.getyourcats.ui.navigation.BottomNavItem
 fun BottomBar(navController: NavController) {
     val items = listOf(BottomNavItem.Home, BottomNavItem.Favorite)
     var selectedItem by remember { mutableStateOf(items.first().screen_route) }
-    Box {
+    Column {
         BottomNavigation(
             backgroundColor = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .navigationBarsPadding()
         ) {
             items.forEach { item ->
                 BottomNavigationItem(
-                    icon = { Icon(item.icon, contentDescription = null) },
+                    icon = {
+                        Icon(
+                            item.icon,
+                            contentDescription = null,
+                            tint = if (item.screen_route == selectedItem) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+                        )
+                    },
                     label = { Text(item.title) },
                     selected = item.screen_route == selectedItem,
                     onClick = {
@@ -46,5 +56,11 @@ fun BottomBar(navController: NavController) {
                 )
             }
         }
+        Box(
+            modifier = Modifier
+                .height(25.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+        )
     }
 }

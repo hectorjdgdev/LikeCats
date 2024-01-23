@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -76,13 +77,12 @@ fun DetailScreen(
             eventFavorite(FavoriteEvent.FavoriteRemoveClicked(it))
 
         }
-
     }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box {
             favoriteObj?.let { favorite ->
                 ParallaxComponent(
                     id,
@@ -94,30 +94,42 @@ fun DetailScreen(
                 )
             }
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Transparent)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(MaterialTheme.colorScheme.primary, Color.Transparent),
+                            startY = 0f,
+                            endY = 400f
+                        )
+                    )
+                    .height(300.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()
+                    .padding(it)
+                    .background (Color.Transparent)
                     .height(100.dp)
                     .align(
                         Alignment.TopCenter
                     )
-            ) {
-                IconButton(onClick = { onClickBack() }) {
-                    Icon(Icons.Filled.ArrowBack, tint = Color.Black, contentDescription = "Back")
+                    ){
+                    IconButton(onClick = { onClickBack() }) {
+                        Icon(Icons.Filled.ArrowBack, tint = Color.White, contentDescription = "Back")
+                    }
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
+                        FavoriteStartComponent(
+                            onClickAddFavorite = {
+                                onClickAddFavorite()
+                            },
+                            onClickARemoveFavorite = {
+                                onClickARemoveFavorite()
+                            },
+                            isFavorite = isFavorite
+                        )
+                    }
                 }
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopEnd) {
-                    FavoriteStartComponent(
-                        onClickAddFavorite = {
-                            onClickAddFavorite()
-                        },
-                        onClickARemoveFavorite = {
-                            onClickARemoveFavorite()
-                        },
-                        isFavorite = isFavorite
-                    )
-                }
+
             }
         }
     }
