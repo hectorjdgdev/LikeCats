@@ -32,6 +32,9 @@ description, and favorite option.
 <b>Offline Support: </b>Incorporates Room for local data storage to enable offline functionality in
 the favorite screen and caching request
 
+<b>Light and Dark Mode: </b> The app support dark and light mode
+
+
 # <b>Technical Details</b>
 <b>Architecture:</b> Implements MVVM (Model-View-ViewModel) for efficient data handling and
 separation of concerns.
